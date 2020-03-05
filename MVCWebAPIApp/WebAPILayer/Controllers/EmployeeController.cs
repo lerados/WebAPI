@@ -18,11 +18,14 @@ namespace WebAPILayer.Controllers
             employees.Add(new Employee { ID = 2, Name = "Satria", ContactNumber = 0987654321, Addres = "Test Addres 222" });
         }
 
+        //api/employee
         public IEnumerable<Employee> Get()
         {
             return employees;
         }
 
+
+        //api/employee/1
         public Employee Get(int id)
         {
             return employees.FirstOrDefault<Employee>(x => x.ID.Equals(id));
