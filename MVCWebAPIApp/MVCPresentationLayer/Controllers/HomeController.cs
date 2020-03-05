@@ -32,6 +32,11 @@ namespace MVCPresentationLayer.Controllers
             using (HttpClient client = new HttpClient())
             {
                 string url = "http://localhost:9111/api/employee?id=" + id;
+
+                string input = "test:pass";
+                byte[] array = System.Text.Encoding.ASCII.GetBytes(input);
+                client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", Convert.ToBase64String(array));
+
                 Task<HttpResponseMessage> result = client.GetAsync(url);
                 if (result.Result.IsSuccessStatusCode)
                 {
@@ -49,6 +54,11 @@ namespace MVCPresentationLayer.Controllers
             {
                 string url = "http://localhost:9111/api/employee";
                 Uri uri = new Uri(url);
+
+                string input = "test:pass";
+                byte[] array = System.Text.Encoding.ASCII.GetBytes(input);
+                client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", Convert.ToBase64String(array));
+
                 System.Threading.Tasks.Task<HttpResponseMessage> result = client.GetAsync(uri);
                 if (result.Result.IsSuccessStatusCode)
                 {

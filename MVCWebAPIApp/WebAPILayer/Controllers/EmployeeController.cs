@@ -19,6 +19,7 @@ namespace WebAPILayer.Controllers
         }
 
         //api/employee
+        [Filters.CustomAuthentication]
         public IEnumerable<Employee> Get()
         {
             return employees;
@@ -26,6 +27,7 @@ namespace WebAPILayer.Controllers
 
 
         //api/employee/1
+        [Filters.CustomAuthentication]
         public Employee Get(int id)
         {
             return employees.FirstOrDefault<Employee>(x => x.ID.Equals(id));
