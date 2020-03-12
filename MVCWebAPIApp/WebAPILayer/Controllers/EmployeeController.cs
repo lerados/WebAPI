@@ -8,66 +8,30 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using EntityFrameworkLayer;
 
 namespace WebAPILayer.Controllers
 {
     public class EmployeeController : ApiController
     {
-        List<Employee> employees;
+        EmployeeManager emanager;
         public EmployeeController()
         {
-            employees = new List<Employee>();
-            //employees.Add(new Employee { ID = 1, Name = "Galih", ContactNumber = 1234567890, Addres = "Test Addres 111" });
-            //employees.Add(new Employee { ID = 2, Name = "Satria", ContactNumber = 0987654321, Addres = "Test Addres 222" });
+            emanager = new EmployeeManager();
         }
 
-        //api/employee
+        //home/
         [Filters.CustomAuthentication]
         public IEnumerable<Employee> Get()
         {
-            SqlConnection cn = new SqlConnection(ConfigurationManager.ConnectionStrings["SqlConnection"].ConnectionString);
-            string command = "SELECT * FROM EMPLOYEE";
-            cn.Open();
-            SqlDataAdapter da = new SqlDataAdapter(command, cn);
-            DataSet ds = new DataSet();
-            da.Fill(ds);
-            foreach(DataRow dr in ds.Tables[0].Rows)
-            {
-                employees.Add(new Employee
-                {
-                    ID = (int)dr["ID"],
-                    Name = (string)dr["FirstName"] + " " + dr["LastName"].ToString(),
-                    ContactNumber = Convert.ToInt64(dr["ContactNumber"]),
-                    Addres = (string)dr["Address"]
-                });
-            }
-            cn.Close();
-            return employees;
+            return emanager.GetAllEmployee();
         }
 
-
-        //api/employee/1
+        //home/get/1
         [Filters.CustomAuthentication]
         public Employee Get(int id)
         {
-            SqlConnection cn = new SqlConnection(ConfigurationManager.ConnectionStrings["SqlConnection"].ConnectionString);
-            string command = "SELECT * FROM EMPLOYEE WHERE ID = " + id;
-            cn.Open();
-            SqlDataAdapter da = new SqlDataAdapter(command, cn);
-            DataSet ds = new DataSet();
-            da.Fill(ds);
-            foreach (DataRow dr in ds.Tables[0].Rows)
-            {
-                employees.Add(new Employee
-                {
-                    ID = (int)dr["ID"],
-                    Name = (string)dr["FirstName"] + " " + dr["LastName"].ToString(),
-                    ContactNumber = Convert.ToInt64(dr["ContactNumber"]),
-                    Addres = (string)dr["Address"]
-                });
-            }
-            cn.Close();
-            return employees.FirstOrDefault<Employee>(x => x.ID.Equals(id));
+            return emanager.GetEmployeeByID(id);
         }
     }
 }
